@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name        列出S1一条帖子的所有内容
 // @namespace   https://github.com/ipcjs
-// @version     1.3.2
+// @version     1.3.3
 // @description 在帖子的导航栏添加[显示全部]按钮, 列出帖子的所有内容
 // @author       ipcjs
-// @include     *://bbs.saraba1st.com/2b/thread-*-*-*.html
-// @include     *://bbs.saraba1st.com/2b/forum.php*
+// @include     *://stage1st.com/2b/thread-*-*-*.html
+// @include     *://stage1st.com/2b/forum.php*
 // @grant       GM_xmlhttpRequest
 // @grant       GM.xmlHttpRequest
 // @grant       GM.setClipboard
@@ -13,7 +13,7 @@
 // @grant       GM_addStyle
 // @grant       GM.addStyle
 // @grant       unsafeWindow
-// @connect     bbs.saraba1st.com
+// @connect     stage1st.com
 // @require     https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // @run-at      document-start
 // ==/UserScript==
@@ -213,7 +213,7 @@ function loadAllPost() {
             table.showMsg(`加载第${page}->${page + concurrentCount - 1}页中...`)
             const results = await Promise.all(Array.from({ length: concurrentCount }, (v, index) => retry(async (i) => {
                 const resp = await ajaxPromise({
-                    url: `https://bbs.saraba1st.com/2b/api/mobile/index.php?module=viewthread&ppp=${POST_PAGE_MAX_COUNT}&tid=${TID}&page=${page + index}&version=1`,
+                    url: `https://stage1st.com/2b/api/mobile/index.php?module=viewthread&ppp=${POST_PAGE_MAX_COUNT}&tid=${TID}&page=${page + index}&version=1`,
                     timeout: 1000 * 15 * (i + 1),
                 })
                 return [index, resp]
@@ -307,7 +307,7 @@ function feature_voters() {
             let $next
             do {
                 page++
-                const resp = await ajaxPromise({ url: `https://bbs.saraba1st.com/2b/forum.php?mod=misc&action=viewvote&tid=${TID}&polloptionid=${option.value}&infloat=yes&handlekey=viewvote&page=${page}&inajax=1&ajaxtarget=fwin_content_viewvote` })
+                const resp = await ajaxPromise({ url: `https://stage1st.com/2b/forum.php?mod=misc&action=viewvote&tid=${TID}&polloptionid=${option.value}&infloat=yes&handlekey=viewvote&page=${page}&inajax=1&ajaxtarget=fwin_content_viewvote` })
                 const $xml = new DOMParser().parseFromString(resp.responseXML.documentElement.firstChild.textContent, 'text/html')
                 const $voters = Array.from($xml.querySelectorAll('li > p > a'))
 
